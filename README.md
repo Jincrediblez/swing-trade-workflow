@@ -1,4 +1,4 @@
-# Swing Trade 投研工作流
+# Swing Trade 价值投机投研工作流 by Jincredible
 
 > **基于基本面与技术面共振的拐点捕捉系统**
 >

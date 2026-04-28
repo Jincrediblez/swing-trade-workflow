@@ -1,4 +1,4 @@
-# Swing Trade 投研工作流（完整版）
+# Swing Trade Workflow 价值投机投研工作流 by Jincredible
 
 > **交易风格**：拐点 / 超级成长 / 大盘科技 / 大趋势  
 > **核心方法论**：基本面拐点 + 技术面突破 = 共振买点  
