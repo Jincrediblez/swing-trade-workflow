@@ -1,0 +1,51 @@
+name: Daily Market Scan
+
+on:
+  schedule:
+    # Run at 9:00 AM UTC (before US market open)
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run daily scan
+      run: |
+        echo "Running daily market scan..."
+        # Add your daily scan script here
+        # Example: python scripts/daily_scan.py
+        echo "Scan completed at $(date)"
+    
+    - name: Upload scan results
+      uses: actions/upload-artifact@v4
+      with:
+        name: daily-scan-$(date +%Y%m%d)
+        path: output/
+        retention-days: 30
+    
+    - name: Update watchlist
+      run: |
+        echo "Updating watchlist..."
+        # Add watchlist update logic here
+    
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git diff --quiet && git diff --staged --quiet || git commit -m "Update daily scan results $(date +%Y-%m-%d)"
+        git push
