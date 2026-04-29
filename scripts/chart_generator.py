@@ -23,7 +23,7 @@ def generate_price_chart(
     symbol: str,
     output_path: str,
     show_ma: bool = True,
-    figsize: tuple = (14, 8)
+    figsize: tuple = (10, 6)
 ) -> Optional[str]:
     """Generate a price + volume chart from K-line data."""
     if not CHARTS_AVAILABLE:
@@ -87,7 +87,7 @@ def generate_summary_chart(
     stats: Dict[str, Any],
     symbol: str,
     output_path: str,
-    figsize: tuple = (10, 6)
+    figsize: tuple = (8, 5)
 ) -> Optional[str]:
     """Generate a summary stats visualization."""
     if not CHARTS_AVAILABLE:
