@@ -41,15 +41,32 @@ def run_futu_script(script_name: str, args: list) -> Optional[dict]:
             cmd, capture_output=True, text=True, timeout=60
         )
         
-        # Parse JSON from output (may have log lines before JSON)
+        # Parse JSON from output (may have log lines before/after JSON)
         output = result.stdout
-        # Find the first '{' or '['
+        # Extract the first complete JSON object or array
         for i, char in enumerate(output):
             if char in "{[":
-                try:
-                    return json.loads(output[i:])
-                except json.JSONDecodeError:
-                    continue
+                # Use bracket matching to find the end of JSON
+                stack = [char]
+                end_char = "}" if char == "{" else "]"
+                for j in range(i + 1, len(output)):
+                    c = output[j]
+                    if c == "{" or c == "[":
+                        stack.append(c)
+                    elif c == "}" or c == "]":
+                        if stack:
+                            stack.pop()
+                            if not stack:
+                                try:
+                                    return json.loads(output[i:j+1])
+                                except json.JSONDecodeError:
+                                    break
+                else:
+                    # Reached end of string, try parsing anyway
+                    try:
+                        return json.loads(output[i:])
+                    except json.JSONDecodeError:
+                        continue
         return None
     except Exception as e:
         print(f"Error running {script_name}: {e}")
@@ -87,10 +104,25 @@ def run_anomaly_script(skill_name: str, symbol: str, days: int = 30) -> Optional
         output = result.stdout
         for i, char in enumerate(output):
             if char in "{[":
-                try:
-                    return json.loads(output[i:])
-                except json.JSONDecodeError:
-                    continue
+                stack = [char]
+                end_char = "}" if char == "{" else "]"
+                for j in range(i + 1, len(output)):
+                    c = output[j]
+                    if c == "{" or c == "[":
+                        stack.append(c)
+                    elif c == "}" or c == "]":
+                        if stack:
+                            stack.pop()
+                            if not stack:
+                                try:
+                                    return json.loads(output[i:j+1])
+                                except json.JSONDecodeError:
+                                    break
+                else:
+                    try:
+                        return json.loads(output[i:])
+                    except json.JSONDecodeError:
+                        continue
         return None
     except Exception as e:
         print(f"Error running {skill_name}: {e}")

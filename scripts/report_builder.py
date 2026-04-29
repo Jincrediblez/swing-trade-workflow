@@ -136,20 +136,26 @@ class ResearchReport:
         capital_score: int = 0,
         sentiment_score: int = 0,
         recommendation: str = "",
-        reasoning: str = ""
+        reasoning: str = "",
+        trade_plan: Optional[Dict[str, str]] = None,
     ) -> "ResearchReport":
         """Add conclusion and recommendation."""
         avg_score = (fundamental_score + technical_score + capital_score + sentiment_score) / 4
+        
+        def fmt_score(score: int) -> str:
+            return f"{score}/5" if score else "N/A"
+        
+        trade_plan = trade_plan or {}
         
         conclusion = f"""## 七、综合判断
 
 | 维度 | 评分 | 状态 |
 |------|------|------|
-| 基本面 | {'⭐' * fundamental_score} | |
-| 技术面 | {'⭐' * technical_score} | |
-| 资金面 | {'⭐' * capital_score} | |
-| 情绪面 | {'⭐' * sentiment_score} | |
-| **综合** | **{'⭐' * int(round(avg_score))}** | |
+| 基本面 | {fmt_score(fundamental_score)} | |
+| 技术面 | {fmt_score(technical_score)} | |
+| 资金面 | {fmt_score(capital_score)} | |
+| 情绪面 | {fmt_score(sentiment_score)} | |
+| **综合** | **{round(avg_score, 1)}/5** | |
 
 ### 共振判断
 {reasoning}
@@ -162,18 +168,18 @@ class ResearchReport:
 ## 八、交易计划建议
 
 ### 买入方案
-- **触发条件**：___
-- **买入区间**：$___ - $___
-- **仓位建议**：___% 账户资金
+- **触发条件**：{trade_plan.get("trigger", "___")}
+- **买入区间**：{trade_plan.get("buy_range", "$___ - $___")}
+- **仓位建议**：{trade_plan.get("position_size", "___% 账户资金")}
 
 ### 止损
-- **止损价**：$___
-- **止损幅度**：___%
+- **止损价**：{trade_plan.get("stop_loss", "$___")}
+- **止损幅度**：{trade_plan.get("stop_loss_pct", "___%")}
 
 ### 目标位
-- 第一目标：$___（减仓 ___%）
-- 第二目标：$___（减仓 ___%）
-- 第三目标：$___（清仓）
+- 第一目标：{trade_plan.get("target_1", "$___（减仓 ___%）")}
+- 第二目标：{trade_plan.get("target_2", "$___（减仓 ___%）")}
+- 第三目标：{trade_plan.get("target_3", "$___（清仓）")}
 
 ---
 
@@ -194,31 +200,47 @@ class ResearchReport:
 
 def build_quick_report(
     symbol: str,
+    company_name: str = "",
     snapshot: Optional[Dict] = None,
     kline: Optional[Dict] = None,
+    fundamentals: str = "",
     technical: Optional[Dict] = None,
     options: Optional[Dict] = None,
     news: Optional[Dict] = None,
+    fundamental_score: int = 0,
+    technical_score: int = 0,
+    capital_score: int = 0,
+    sentiment_score: int = 0,
+    recommendation: str = "",
+    reasoning: str = "",
+    trade_plan: Optional[Dict[str, str]] = None,
     output_dir: str = "./output"
 ) -> str:
     """Build a quick research report from available data."""
-    report = ResearchReport(symbol)
+    report = ResearchReport(symbol, company_name=company_name)
     report.add_header().add_toc()
-    
+
     if snapshot:
         report.add_snapshot(snapshot)
     if kline:
         report.add_kline(kline)
+    if fundamentals:
+        report.add_fundamentals(fundamentals)
     if technical:
         report.add_technical_anomaly(technical)
     if options:
         report.add_options(options)
     if news:
         report.add_news(news)
-    
+
     report.add_conclusion(
-        recommendation="请根据上述数据手动填写综合判断和交易计划。",
-        reasoning=""
+        fundamental_score=fundamental_score,
+        technical_score=technical_score,
+        capital_score=capital_score,
+        sentiment_score=sentiment_score,
+        recommendation=recommendation or "请根据上述数据手动填写综合判断和交易计划。",
+        reasoning=reasoning,
+        trade_plan=trade_plan,
     )
-    
+
     return report.save(output_dir)
