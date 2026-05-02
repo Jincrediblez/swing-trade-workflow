@@ -1,0 +1,36 @@
+宏观数据查询结果说明
+========================================
+查询内容: 美国CPI 利率 美联储最新数据
+数据频率组数: 4
+
+各频率数据统计:
+  - monthly: 5 行
+  - yearly: 4 行
+  - quarterly: 2 行
+  - daily: 7 行
+
+生成的文件:
+  - mx_macro_data_1a9b83dd_monthly.csv
+  - mx_macro_data_1a9b83dd_yearly.csv
+  - mx_macro_data_1a9b83dd_quarterly.csv
+  - mx_macro_data_1a9b83dd_daily.csv
+
+详细说明:
+实体名称 [monthly]: CPI（月）
+标题 [monthly]: 2025-11至2026-03的CPI（月）
+单位 [monthly]: (%)
+实体名称 [yearly]: CPI（年）
+标题 [yearly]: 2022至2025的CPI（年）
+单位 [yearly]: (%)
+实体名称 [quarterly]: 利率（季）
+标题 [quarterly]: 2025-Q2至2025-Q4的利率（季）
+单位 [quarterly]: (%)
+实体名称 [yearly]: 利率（年）
+标题 [yearly]: 2022至2025的利率（年）
+实体名称 [daily]: 利率（日）
+标题 [daily]: 2026-04-02至2026-05-04的利率（日）
+单位 [daily]: (%)
+
+数据源信息:
+接口: https://ai-saas.eastmoney.com/proxy/b/mcp/tool/searchMacroData
+查询时间: 2026-05-02 11:04:40

@@ -1,0 +1,8 @@
+金融数据查询结果说明
+========================================
+查询内容: INTC英特尔最近8个季度营收毛利率运营利润率EPS自由现金流和估值PE PS PEG
+数据文件路径: /Users/wenjinzhou/Documents/VS Code Base/swing-trade-workflow/miaoxiang/mx_finance_data/mx_finance_data_2af778c6.xlsx
+描述文件路径: /Users/wenjinzhou/Documents/VS Code Base/swing-trade-workflow/miaoxiang/mx_finance_data/mx_finance_data_2af778c6_description.txt
+数据行数: 21
+表数量: 5
+Sheet 列表: 英特尔(INTC.O)的每股收益EPS(TTM)、3年市盈率百, 英特尔(INTC.O)的市销率(PS)(2026-05-01), 英特尔(INTC.O)(最新年结日01-02)的企业自由现金流, 英特尔(INTC.O)当前的市净率、市销率TTM等, 英特尔(INTC.O)的市盈率PE(TTM)、市净率PB等
